@@ -1,0 +1,13 @@
+Manifest
+README
+Rakefile
+TODO
+diff.gemspec
+lib/diff.rb
+lib/emaildiff.rb
+lib/unixdiff.rb
+test/test_cases.rb
+test/test_diff.rb
+test/test_emailcases.rb
+test/test_emaildiff.rb
+test/test_unixdiff.rb
