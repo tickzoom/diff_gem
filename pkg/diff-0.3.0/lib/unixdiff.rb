@@ -2,9 +2,6 @@
 
 require 'diff'
 
-# TODO: parameters
-
-
 def loadfile(filename)
   lines = nil
   File.open(filename, "r") { |f|

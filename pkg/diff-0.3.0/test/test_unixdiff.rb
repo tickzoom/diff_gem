@@ -31,7 +31,7 @@ class UnixDiffTest < RUNIT::TestCase
     makefile("file1", a)
     makefile("file2", b)
     result1 = rundiff("diff")
-    result2 = rundiff("./unixdiff.rb");
+    result2 = rundiff("lib/unixdiff.rb");
     assert_equal(result1, result2)
   end
 end

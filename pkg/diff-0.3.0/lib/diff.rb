@@ -1,7 +1,5 @@
 class Diff
 
-  VERSION = 0.3
-
   def Diff.lcs(a, b)
     astart = 0
     bstart = 0
