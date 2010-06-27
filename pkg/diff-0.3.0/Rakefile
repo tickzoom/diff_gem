@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('diff','0.3.0') do |s|
+Echoe.new('diff','0.3.1') do |s|
   s.description = "Diff Algorithm Implementation"
   s.url = "http://users.cybercity.dk/~dsl8950/ruby/diff.html"
   s.author = "Wayne Walter"
