@@ -4,6 +4,7 @@ class EmailDiff < Diff
   GREATER = 62
 
   attr_reader :orig_a, :orig_b
+  attr_reader :strip_a, :strip_b
 
   def initialize(diffs_or_a, b = nil, isstring = nil)
     if b.nil?
@@ -13,9 +14,9 @@ class EmailDiff < Diff
     else
       @diffs = []
       @curdiffs = []
-      strip_a = striplines(diffs_or_a)
-      strip_b = striplines(b)
-      makediff(strip_a, strip_b)
+      @strip_a = striplines(diffs_or_a)
+      @strip_b = striplines(b)
+      makediff(@strip_a, @strip_b)
       @orig_a = diffs_or_a
       @orig_b = b
       @difftype = diffs_or_a.class
@@ -27,12 +28,12 @@ class EmailDiff < Diff
     newary.each_with_index { |item,index| 
       if item.class == String
         item = item.dup
-        item.strip
-        while item[0] == GREATER
+        item = item.strip
+        while item[0,1] == ">"
           item.slice!(0)
-          item.strip
-          newary[index] = item
+          item = item.strip
         end
+        newary[index] = item
       end
     } 
     return newary
@@ -44,7 +45,7 @@ module HTMLCollapsable
     Diff.new(self, b)
   end
 
-  def patch_email(diff,starttoken,endtoken)
+  def patch_email(diff,starttoken = nil,endtoken = nil)
     newary = nil
     if diff.difftype == String
       newary = diff.difftype.new('')
@@ -61,25 +62,25 @@ module HTMLCollapsable
 	  if ai < mod[1] 
             quoted = 1
           end
-          newary << starttoken if quoted == 1
+          newary << starttoken if quoted == 1 && !starttoken.nil?
 	  while ai < mod[1]
-	    newary << diff.orig_b[bi]
+	    newary << diff.orig_b[bi] if !starttoken.nil?
 	    ai += 1
 	    bi += 1
 	  end
-	  newary << endtoken if quoted == 1
+	  newary << endtoken if quoted == 1 && !starttoken.nil?
 	  ai += 1
 	when '+'
 	  if bi < mod[1] 
             quoted = 1
           end
-          newary << starttoken if quoted == 1
+          newary << starttoken if quoted == 1 && !starttoken.nil?
 	  while bi < mod[1]
-	    newary << diff.orig_b[bi]
+	    newary << diff.orig_b[bi] if !starttoken.nil?
 	    ai += 1
 	    bi += 1
 	  end
-	  newary << endtoken if quoted == 1
+	  newary << endtoken if quoted == 1 && !starttoken.nil?
 	  newary << diff.orig_b[mod[1]]
 	  bi += 1
 	else
@@ -91,13 +92,13 @@ module HTMLCollapsable
     if ai < self.length
       quoted = 1
     end
-    newary << starttoken if quoted == 1
+    newary << starttoken if quoted == 1 && !starttoken.nil?
     while ai < self.length
-      newary << diff.orig_b[bi]
+      newary << diff.orig_b[bi] if !starttoken.nil?
       ai += 1
       bi += 1
     end
-    newary << endtoken if quoted == 1
+    newary << endtoken if quoted == 1 && !starttoken.nil?
     return newary
   end
 end

@@ -8,16 +8,24 @@ require 'test_emailcases'
 class EmailDiffTest < RUNIT::TestCase
 
   include EmailDiffArrayTests
-  def emailtest(a, b, c)
+  def emailtest(a, b, c, d = :tokens)
     #puts "old string:"
     #puts a
     #puts "new string:"
     #puts b
     diff = EmailDiff.new(a, b)
-    d = a.patch_email(diff,888,999)
+    #puts "old stripped:"
+    #puts diff.strip_a
+    #puts "new stripped:"
+    #puts diff.strip_b
+    if d == :tokens 
+      result = a.patch_email(diff,888,999)
+    else
+      result = a.patch_email(diff)
+    end
     #puts "result:"
     #puts d
-    assert_equal(c,d)
+    assert_equal(c,result)
   end
 end
 
